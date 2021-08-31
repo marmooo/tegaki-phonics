@@ -6,7 +6,8 @@ const tegakiPanel = document.getElementById('tegakiPanel');
 let canvases = [...tegakiPanel.getElementsByTagName('canvas')];
 let pads = [];
 let problems = [];
-let answer = 'Gopher';
+let answerEn = 'Gopher';
+let answerJa = 'ゴファー';
 let firstRun = true;
 let canvasCache = document.createElement('canvas').getContext('2d');
 let model;
@@ -45,7 +46,7 @@ function toggleVoice(obj) {
     document.getElementById('voiceOn').classList.remove('d-none');
     document.getElementById('voiceOff').classList.add('d-none');
     unlockAudio();
-    loopVoice(answer, 3);
+    loopVoice(answerEn, 3);
   }
 }
 
@@ -123,7 +124,7 @@ function loopVoice(text, n) {
 }
 
 function respeak() {
-  loopVoice(answer, 1);
+  loopVoice(answerEn, 1);
 }
 
 function setTegakiPanel() {
@@ -131,7 +132,7 @@ function setTegakiPanel() {
     tegakiPanel.removeChild(tegakiPanel.lastChild);
   }
   pads = [];
-  for (var i=0; i<answer.length; i++) {
+  for (var i=0; i<answerEn.length; i++) {
     var box = document.createElement('tegaki-box');
     tegakiPanel.appendChild(box);
   }
@@ -141,7 +142,7 @@ function setTegakiPanel() {
 
 function showPredictResult(canvas, result) {
   var pos = canvases.indexOf(canvas);
-  var answerWord = answer[pos];
+  var answerWord = answerEn[pos];
   var matched = false;
   for (var i=0; i<result.length; i++) {
     if (result[i] == answerWord) {
@@ -227,18 +228,20 @@ function hideAnswer() {
 
 function showAnswer() {
   document.getElementById('answer').classList.remove('d-none');
-  document.getElementById('answerText').textContent = answer;
+  document.getElementById('answerEn').textContent = answerEn;
+  document.getElementById('answerJa').textContent = answerJa;
 }
 
 function nextProblem() {
   var [en, ja] = problems[getRandomInt(0, problems.length - 1)];
   var input = document.getElementById('cse-search-input-box-id');
-  input.value = ja;
-  answer = en;
+  answerEn = en;
+  answerJa = ja;
+  input.value = answerJa;
   hideAnswer();
-  document.getElementById('wordLength').innerText = answer.length;
+  document.getElementById('wordLength').innerText = answerEn.length;
   if (localStorage.getItem('voice') == 1) {
-    loopVoice(answer, 3);
+    loopVoice(answerEn, 3);
   } else {
     speechSynthesis.cancel();
   }
@@ -359,13 +362,13 @@ canvases.forEach(canvas => {
 const worker = new Worker('worker.js');
 worker.addEventListener('message', function(e) {
   var reply = showPredictResult(canvases[e.data.pos], e.data.result);
-  if (reply == answer) {
+  if (reply == answerEn) {
     var noHint = document.getElementById('answer').classList.contains('d-none');
     if (noHint) {
       correctCount += 1;
     }
     playAudio(correctAudio);
-    document.getElementById('reply').textContent = '◯ ' + answer;
+    document.getElementById('reply').textContent = '◯ ' + answerEn;
     document.getElementById('searchButton').classList.add('animate__heartBeat');
   }
 });
