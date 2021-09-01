@@ -54,11 +54,11 @@
             Tegaki Phonics
           </a>
           <div class="navbar-nav">
-            <button title="音声を自動再生" onclick="toggleVoice(this)" id="voice" class="btn p-0 ms-1">
+            <button title="音声を自動再生" id="toggleVoice" class="btn p-0 ms-1">
               <svg id="voiceOn" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-up-fill" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/></svg>
               <svg id="voiceOff" class="d-none" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-mute-fill" viewBox="0 0 16 16"><path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zm7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"/></svg>
             </button>
-            <button title="ダークモード切替" onclick="toggleDarkMode()" class="fs-4 btn p-0 ms-1">🌓</button>
+            <button title="ダークモード切替" id="toggleDarkMode" class="fs-4 btn p-0 ms-1">🌓</button>
           </div>
         </div>
       </nav>
@@ -83,7 +83,7 @@
           <span id="score" class="h1">0</span>
           <ruby>問<rp>(</rp><rt>もん</rt><rp>)</rp></ruby>！
         </div>
-        <button onclick="countdown()" type="button" class="btn btn-primary btn-lg m-1">リスタート</button>
+        <button id="restartButton" type="button" class="btn btn-primary btn-lg m-1">リスタート</button>
       </div>
       <div id="playPanel">
         <div class="row">
@@ -106,7 +106,7 @@
                 </div>
               </div>
               <div>
-                <button onclick="countdown()" class="btn btn-primary btn-lg">スタート</button>
+                <button id="startButton" class="btn btn-primary btn-lg">スタート</button>
               </div>
             </div>
           </div>
@@ -212,11 +212,11 @@
               <input id="searchButton" type="submit" value="これなあに？" class="btn btn-primary btn-lg mx-1">
             </form>
             <div>
-              <button onclick="showAnswer()" class="btn btn-secondary btn-lg mx-1">こたえ</button>
+              <button id="showAnswer" class="btn btn-secondary btn-lg mx-1">こたえ</button>
             </div>
           </div>
           <div class="text-center pt-3">
-            <button onclick="respeak()" title="もう一度聴く" class="btn btn-outline-secondary btn-lg ms-1">
+            <button id="respeak" title="もう一度聴く" class="btn btn-outline-secondary btn-lg ms-1">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
             </button>
           </div>
