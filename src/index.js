@@ -7,6 +7,7 @@ let answerJa = "ゴファー";
 let firstRun = true;
 let englishVoices = [];
 let correctCount = 0;
+const canvasCache = document.createElement("canvas").getContext("2d");
 let endAudio, correctAudio;
 loadAudios();
 const AudioContext = window.AudioContext || window.webkitAudioContext;
