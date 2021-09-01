@@ -225,6 +225,7 @@ function nextProblem() {
   answerEn = en;
   answerJa = ja;
   input.value = answerJa;
+  document.getElementById("reply").textContent = "";
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {
     showAnswer();
