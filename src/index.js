@@ -239,6 +239,9 @@ function nextProblem() {
   answerJa = ja;
   input.value = answerJa;
   hideAnswer();
+  if (document.getElementById('mode').textContent == 'EASY') {
+    showAnswer();
+  }
   document.getElementById('wordLength').innerText = answerEn.length;
   if (localStorage.getItem('voice') == 1) {
     loopVoice(answerEn, 3);
@@ -375,6 +378,7 @@ worker.addEventListener('message', function(e) {
 
 initProblems();
 
+document.getElementById('mode').onclick = changeMode;
 document.getElementById('searchButton').addEventListener('animationend', function() {
   this.classList.remove('animate__heartBeat');
 });
