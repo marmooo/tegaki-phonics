@@ -6,7 +6,8 @@ let answerEn = "Gopher";
 let answerJa = "ゴファー";
 let firstRun = true;
 let englishVoices = [];
-let correctCount = 0;
+let hinted = false;
+let correctCount = problemCount = 0;
 const canvasCache = document.createElement("canvas").getContext("2d");
 let endAudio, correctAudio;
 loadAudios();
@@ -214,12 +215,15 @@ function hideAnswer() {
 }
 
 function showAnswer() {
+  hinted = true;
   document.getElementById("answer").classList.remove("d-none");
   document.getElementById("answerEn").textContent = answerEn;
   document.getElementById("answerJa").textContent = answerJa;
 }
 
 function nextProblem() {
+  hinted = false;
+  problemCount += 1;
   const [en, ja] = problems[getRandomInt(0, problems.length - 1)];
   const input = document.getElementById("cse-search-input-box-id");
   answerEn = en;
@@ -228,7 +232,9 @@ function nextProblem() {
   document.getElementById("reply").textContent = "";
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {
-    showAnswer();
+    document.getElementById("answer").classList.remove("d-none");
+    document.getElementById("answerEn").textContent = answerEn;
+    document.getElementById("answerJa").textContent = answerJa;
     if (localStorage.getItem("voice") == 1) {
       loopVoice(answerEn, 3);
     } else {
@@ -294,6 +300,7 @@ function startGameTimer() {
       playPanel.classList.add("d-none");
       scorePanel.classList.remove("d-none");
       document.getElementById("score").textContent = correctCount;
+      document.getElementById("total").textContent = problemCount;
     }
   }, 1000);
 }
@@ -316,8 +323,9 @@ function countdown() {
       clearTimeout(countdownTimer);
       gameStart.classList.add("d-none");
       playPanel.classList.remove("d-none");
-      correctCount = 0;
+      correctCount = problemCount = 0;
       document.getElementById("score").textContent = correctCount;
+      document.getElementById("total").textContent = problemCount;
       document.getElementById("searchButton").classList.add(
         "animate__heartBeat",
       );
@@ -366,12 +374,7 @@ const worker = new Worker("worker.js");
 worker.addEventListener("message", function (e) {
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
-    const noHint = document.getElementById("answer").classList.contains(
-      "d-none",
-    );
-    if (noHint) {
-      correctCount += 1;
-    }
+    if (!hinted) correctCount += 1;
     playAudio(correctAudio);
     if (localStorage.getItem("voice") == 1) {
       if (document.getElementById("mode").textContent == "HARD") {
