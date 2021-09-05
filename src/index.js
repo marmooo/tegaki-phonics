@@ -229,13 +229,17 @@ function nextProblem() {
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {
     showAnswer();
+    if (localStorage.getItem("voice") == 1) {
+      loopVoice(answerEn, 3);
+    } else {
+      speechSynthesis.cancel();
+    }
+  } else {
+    document.getElementById("answer").classList.remove("d-none");
+    document.getElementById("answerEn").textContent = "";
+    document.getElementById("answerJa").textContent = answerJa;
   }
   document.getElementById("wordLength").innerText = answerEn.length;
-  if (localStorage.getItem("voice") == 1) {
-    loopVoice(answerEn, 3);
-  } else {
-    speechSynthesis.cancel();
-  }
 }
 
 function initProblems() {
@@ -369,6 +373,11 @@ worker.addEventListener("message", function (e) {
       correctCount += 1;
     }
     playAudio(correctAudio);
+    if (localStorage.getItem("voice") == 1) {
+      if (document.getElementById("mode").textContent == "HARD") {
+        loopVoice(answerEn, 1);
+      }
+    }
     document.getElementById("reply").textContent = "◯ " + answerEn;
     document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
