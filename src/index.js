@@ -222,6 +222,11 @@ function showAnswer() {
 }
 
 function nextProblem() {
+  const searchButton = document.getElementById("searchButton");
+  searchButton.disabled = true;
+  setTimeout(function () {
+    searchButton.disabled = false;
+  }, 2000);
   hinted = false;
   problemCount += 1;
   const [en, ja] = problems[getRandomInt(0, problems.length - 1)];
