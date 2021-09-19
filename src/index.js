@@ -2,6 +2,7 @@ const tegakiPanel = document.getElementById("tegakiPanel");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 let pads = [];
 let problems = [];
+let problemCandidate;
 let answerEn = "Gopher";
 let answerJa = "ゴファー";
 let firstRun = true;
@@ -229,8 +230,13 @@ function nextProblem() {
   }, 2000);
   hinted = false;
   problemCount += 1;
-  const [en, ja] = problems[getRandomInt(0, problems.length - 1)];
+  if (problemCandidate.length <= 0) {
+    problemCandidate = problems.slice();
+  }
+  const problem =
+    problemCandidate.splice(getRandomInt(0, problemCandidate.length), 1)[0];
   const input = document.getElementById("cse-search-input-box-id");
+  const [en, ja] = problem;
   answerEn = en;
   answerJa = ja;
   input.value = answerJa;
@@ -258,10 +264,11 @@ function initProblems() {
   fetch("data/" + grade + ".csv").then((response) => response.text()).then(
     (tsv) => {
       problems = [];
-      tsv.split("\n").forEach((line) => {
+      tsv.trim().split(/\n/).forEach((line) => {
         const [en, ja] = line.split(",");
         problems.push([en, ja]);
       });
+      problemCandidate = problems.slice();
     },
   );
 }
