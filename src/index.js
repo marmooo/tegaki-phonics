@@ -102,10 +102,14 @@ function loadVoices() {
     if (voices.length !== 0) {
       resolve(voices);
     } else {
-      speechSynthesis.addEventListener("voiceschanged", function () {
-        voices = speechSynthesis.getVoices();
-        resolve(voices);
-      });
+      if (window.speechSynthesis.onvoiceschanged) {
+        speechSynthesis.addEventListener("voiceschanged", function () {
+          voices = speechSynthesis.getVoices();
+          resolve(voices);
+        });
+      } else {
+        document.getElementById("noTTS").classList.remove("d-none");
+      }
     }
   });
   allVoicesObtained.then((voices) => {
