@@ -102,14 +102,17 @@ function loadVoices() {
     if (voices.length !== 0) {
       resolve(voices);
     } else {
-      if (window.speechSynthesis.onvoiceschanged) {
-        speechSynthesis.addEventListener("voiceschanged", function () {
-          voices = speechSynthesis.getVoices();
-          resolve(voices);
-        });
-      } else {
-        document.getElementById("noTTS").classList.remove("d-none");
-      }
+      let supported = false;
+      speechSynthesis.addEventListener("voiceschanged", function () {
+        supported = true;
+        voices = speechSynthesis.getVoices();
+        resolve(voices);
+      });
+      setTimeout(() => {
+        if (!supported) {
+          document.getElementById("noTTS").classList.remove("d-none");
+        }
+      }, 1000);
     }
   });
   allVoicesObtained.then((voices) => {
