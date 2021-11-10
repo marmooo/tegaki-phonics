@@ -172,7 +172,7 @@ function showPredictResult(canvas, result) {
       reply += " ";
     }
   }
-  document.getElementById("reply").innerText = reply;
+  document.getElementById("reply").textContent = reply;
   return reply;
 }
 
@@ -263,7 +263,7 @@ function nextProblem() {
     document.getElementById("answerEn").textContent = "";
     document.getElementById("answerJa").textContent = answerJa;
   }
-  document.getElementById("wordLength").innerText = answerEn.length;
+  document.getElementById("wordLength").textContent = answerEn.length;
 }
 
 function initProblems() {
@@ -307,12 +307,12 @@ let gameTimer;
 function startGameTimer() {
   clearInterval(gameTimer);
   const timeNode = document.getElementById("time");
-  timeNode.innerText = "180秒 / 180秒";
+  timeNode.textContent = "180秒 / 180秒";
   gameTimer = setInterval(function () {
-    const arr = timeNode.innerText.split("秒 /");
+    const arr = timeNode.textContent.split("秒 /");
     const t = parseInt(arr[0]);
     if (t > 0) {
-      timeNode.innerText = (t - 1) + "秒 /" + arr[1];
+      timeNode.textContent = (t - 1) + "秒 /" + arr[1];
     } else {
       clearInterval(gameTimer);
       playAudio(endAudio);
@@ -331,13 +331,13 @@ function countdown() {
   playPanel.classList.add("d-none");
   scorePanel.classList.add("d-none");
   const counter = document.getElementById("counter");
-  counter.innerText = 3;
+  counter.textContent = 3;
   countdownTimer = setInterval(function () {
     const colors = ["skyblue", "greenyellow", "violet", "tomato"];
-    if (parseInt(counter.innerText) > 1) {
-      const t = parseInt(counter.innerText) - 1;
+    if (parseInt(counter.textContent) > 1) {
+      const t = parseInt(counter.textContent) - 1;
       counter.style.backgroundColor = colors[t];
-      counter.innerText = t;
+      counter.textContent = t;
     } else {
       clearTimeout(countdownTimer);
       gameStart.classList.add("d-none");
