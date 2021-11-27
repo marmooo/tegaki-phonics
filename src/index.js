@@ -186,7 +186,7 @@ function initSignaturePad(canvas) {
     minDistance: 0,
   });
   pad.addEventListener("endStroke", () => {
-    predict(this.canvas);
+    predict(pad.canvas);
   });
   return pad;
 }
