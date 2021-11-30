@@ -16,7 +16,7 @@ function showPredictResult(canvas,result){const pos=canvases.indexOf(canvas);con
 if(matched){canvas.setAttribute("data-predict",answerWord);}else{canvas.setAttribute("data-predict",result[0]);}
 let reply="";for(let i=0;i<canvases.length;i++){const alphabet=canvases[i].getAttribute("data-predict");if(alphabet){reply+=alphabet;}else{reply+=" ";}}
 document.getElementById("reply").textContent=reply;return reply;}
-function initSignaturePad(canvas){const pad=new SignaturePad(canvas,{minWidth:2,maxWidth:2,penColor:"black",backgroundColor:"white",throttle:0,minDistance:0,});pad.addEventListener("endStroke",()=>{predict(pad.canvas);});return pad;}
+function initSignaturePad(canvas){const pad=new SignaturePad(canvas,{minWidth:2,maxWidth:2,penColor:"black",backgroundColor:"white",throttle:0,minDistance:0,});pad.addEventListener("afterUpdateStroke",()=>{predict(pad.canvas);});return pad;}
 function getImageData(drawElement){const inputWidth=inputHeight=28;canvasCache.drawImage(drawElement,0,0,inputWidth,inputHeight);const imageData=canvasCache.getImageData(0,0,inputWidth,inputHeight);const data=imageData.data;for(let i=0;i<data.length;i+=4){data[i]=255-data[i];data[i+1]=255-data[i+1];data[i+2]=255-data[i+2];}
 return imageData;}
 function predict(canvas){const imageData=getImageData(canvas);const pos=canvases.indexOf(canvas);worker.postMessage({imageData:imageData,pos:pos});}
