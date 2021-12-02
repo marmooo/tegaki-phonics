@@ -385,7 +385,9 @@ customElements.define(
 
 function createTegakiBox() {
   const div = document.createElement("div");
-  const template = document.getElementById("tegaki-box").content.cloneNode(true);
+  const template = document.getElementById("tegaki-box").content.cloneNode(
+    true,
+  );
   div.appendChild(template);
   const canvas = div.querySelector("canvas");
   const pad = initSignaturePad(canvas);
