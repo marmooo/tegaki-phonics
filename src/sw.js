@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-12-02 11:32';
+var CACHE_NAME = '2021-12-04 14:30';
 var urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/eraser.svg",
