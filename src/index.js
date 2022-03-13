@@ -271,16 +271,16 @@ function nextProblem() {
 
 function initProblems() {
   const grade = document.getElementById("gradeOption").radio.value;
-  fetch("data/" + grade + ".csv").then((response) => response.text()).then(
-    (tsv) => {
+  fetch("data/" + grade + ".csv")
+    .then((response) => response.text())
+    .then((tsv) => {
       problems = [];
       tsv.trim().split(/\n/).forEach((line) => {
         const [en, ja] = line.split(",");
         problems.push([en, ja]);
       });
       problemCandidate = problems.slice();
-    },
-  );
+    });
 }
 
 function searchByGoogle(event) {
