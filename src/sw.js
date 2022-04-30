@@ -1,10 +1,11 @@
-var CACHE_NAME = '2022-04-28 00:05';
+var CACHE_NAME = '2022-05-01 08:30';
 var urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/eraser.svg",
   "/tegaki-phonics/index.js",
   "/tegaki-phonics/model/model.json",
   "/tegaki-phonics/model/group1-shard1of1.bin",
+  "/tegaki-phonics/worker.js",
   "/tegaki-phonics/mp3/end.mp3",
   "/tegaki-phonics/mp3/correct3.mp3",
   "/tegaki-phonics/favicon/favicon.svg",
