@@ -1,14 +1,16 @@
 var CACHE_NAME = "2022-06-10 00:00";
 var urlsToCache = [
   "/tegaki-phonics/",
-  "/tegaki-phonics/eraser.svg",
   "/tegaki-phonics/index.js",
+  "/tegaki-phonics/index.yomi",
+  "/tegaki-phonics/worker.js",
   "/tegaki-phonics/model/model.json",
   "/tegaki-phonics/model/group1-shard1of1.bin",
-  "/tegaki-phonics/worker.js",
   "/tegaki-phonics/mp3/end.mp3",
   "/tegaki-phonics/mp3/correct3.mp3",
+  "/tegaki-phonics/eraser.svg",
   "/tegaki-phonics/favicon/favicon.svg",
+  "https://marmooo.github.io/yomico/yomico.min.js",
   "https://cdn.jsdelivr.net/npm/signature_pad@4.0.4/dist/signature_pad.umd.min.js",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.17.0/dist/tf.min.js",
