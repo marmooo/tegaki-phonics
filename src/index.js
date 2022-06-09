@@ -1,5 +1,9 @@
+const playPanel = document.getElementById("playPanel");
+const countPanel = document.getElementById("countPanel");
+const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
+const gameTime = 180;
 let pads = [];
 let problems = [];
 let problemCandidate;
@@ -103,7 +107,7 @@ function loadVoices() {
       resolve(voices);
     } else {
       let supported = false;
-      speechSynthesis.addEventListener("voiceschanged", function () {
+      speechSynthesis.addEventListener("voiceschanged", () => {
         supported = true;
         voices = speechSynthesis.getVoices();
         resolve(voices);
@@ -235,7 +239,7 @@ function showAnswer() {
 function nextProblem() {
   const searchButton = document.getElementById("searchButton");
   searchButton.disabled = true;
-  setTimeout(function () {
+  setTimeout(() => {
     searchButton.disabled = false;
   }, 2000);
   hinted = false;
@@ -310,12 +314,11 @@ let gameTimer;
 function startGameTimer() {
   clearInterval(gameTimer);
   const timeNode = document.getElementById("time");
-  timeNode.textContent = "180秒 / 180秒";
-  gameTimer = setInterval(function () {
-    const arr = timeNode.textContent.split("秒 /");
-    const t = parseInt(arr[0]);
+  initTime();
+  gameTimer = setInterval(() => {
+    const t = parseInt(timeNode.textContent);
     if (t > 0) {
-      timeNode.textContent = (t - 1) + "秒 /" + arr[1];
+      timeNode.textContent = t - 1;
     } else {
       clearInterval(gameTimer);
       playAudio(endAudio);
@@ -330,12 +333,12 @@ function startGameTimer() {
 let countdownTimer;
 function countdown() {
   clearTimeout(countdownTimer);
-  gameStart.classList.remove("d-none");
+  countPanel.classList.remove("d-none");
   playPanel.classList.add("d-none");
   scorePanel.classList.add("d-none");
   const counter = document.getElementById("counter");
   counter.textContent = 3;
-  countdownTimer = setInterval(function () {
+  countdownTimer = setInterval(() => {
     const colors = ["skyblue", "greenyellow", "violet", "tomato"];
     if (parseInt(counter.textContent) > 1) {
       const t = parseInt(counter.textContent) - 1;
@@ -343,7 +346,7 @@ function countdown() {
       counter.textContent = t;
     } else {
       clearTimeout(countdownTimer);
-      gameStart.classList.add("d-none");
+      countPanel.classList.add("d-none");
       playPanel.classList.remove("d-none");
       correctCount = problemCount = 0;
       document.getElementById("score").textContent = correctCount;
@@ -354,6 +357,10 @@ function countdown() {
       startGameTimer();
     }
   }, 1000);
+}
+
+function initTime() {
+  document.getElementById("time").textContent = gameTime;
 }
 
 function changeMode() {
@@ -408,7 +415,7 @@ canvases.forEach((canvas) => {
 });
 
 const worker = new Worker("worker.js");
-worker.addEventListener("message", function (e) {
+worker.addEventListener("message", (e) => {
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
     if (!hinted) correctCount += 1;
@@ -418,7 +425,7 @@ worker.addEventListener("message", function (e) {
         loopVoice(answerEn, 1);
       }
     }
-    document.getElementById("reply").textContent = "◯ " + answerEn;
+    document.getElementById("reply").textContent = "⭕ " + answerEn;
     document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
 });
@@ -434,8 +441,8 @@ document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("searchButton").addEventListener(
   "animationend",
-  function () {
-    this.classList.remove("animate__heartBeat");
+  (e) => {
+    e.target.classList.remove("animate__heartBeat");
   },
 );
 document.getElementById("mode").onclick = changeMode;
