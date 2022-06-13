@@ -28,6 +28,11 @@ function loadConfig() {
     document.getElementById("voiceOn").classList.add("d-none");
     document.getElementById("voiceOff").classList.remove("d-none");
   }
+  if (localStorage.getItem("furigana") == 1) {
+    const obj = document.getElementById("addFurigana");
+    addFurigana(obj);
+    obj.setAttribute("data-done", true);
+  }
 }
 
 function toggleDarkMode() {
