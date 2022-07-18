@@ -7,12 +7,12 @@ const gameTime = 180;
 let pads = [];
 let problems = [];
 let answered = false;
+let hinted = false;
 let problemCandidate;
 let answerEn = "Gopher";
 let answerJa = "ゴファー";
 let firstRun = true;
 let englishVoices = [];
-let hinted = false;
 let correctCount = problemCount = 0;
 const canvasCache = document.createElement("canvas").getContext("2d");
 let endAudio, correctAudio;
@@ -238,13 +238,12 @@ function showAnswer() {
 }
 
 function nextProblem() {
-  answered = false;
+  answered = hinted = false;
   const searchButton = document.getElementById("searchButton");
   searchButton.disabled = true;
   setTimeout(() => {
     searchButton.disabled = false;
   }, 2000);
-  hinted = false;
   problemCount += 1;
   if (problemCandidate.length <= 0) {
     problemCandidate = problems.slice();
