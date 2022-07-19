@@ -258,19 +258,11 @@ function nextProblem() {
   document.getElementById("reply").textContent = "";
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {
-    document.getElementById("answer").classList.remove("d-none");
-    document.getElementById("answerEn").textContent = answerEn;
-    document.getElementById("answerJa").textContent = answerJa;
-    if (localStorage.getItem("voice") == 1) {
-      loopVoice(answerEn, 3);
-    } else {
-      speechSynthesis.cancel();
-    }
-  } else {
-    document.getElementById("answer").classList.remove("d-none");
-    document.getElementById("answerEn").textContent = "";
-    document.getElementById("answerJa").textContent = answerJa;
+    loopVoice(answerEn, 3);
   }
+  document.getElementById("answer").classList.remove("d-none");
+  document.getElementById("answerEn").textContent = "";
+  document.getElementById("answerJa").textContent = answerJa;
   document.getElementById("wordLength").textContent = answerEn.length;
 }
 
@@ -423,11 +415,7 @@ worker.addEventListener("message", (e) => {
     answered = true;
     if (!hinted) correctCount += 1;
     playAudio(correctAudio);
-    if (localStorage.getItem("voice") == 1) {
-      if (document.getElementById("mode").textContent == "HARD") {
-        loopVoice(answerEn, 1);
-      }
-    }
+    loopVoice(answerEn, 1);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
     document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
