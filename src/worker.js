@@ -32,24 +32,14 @@ function predict(imageData) {
   return [letter1, letter2];
 }
 
-// async function predict(imageData) {
-//   const profileInfo = await tf.profile(() => {
-//     const accuracyScores = getAccuracyScores(imageData);
-//   });
-//   const kernelNames = profileInfo.kernelNames
-//   console.log(kernelNames);
-//   return getSortedPredict(accuracyScores);
-// }
-
 importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.19.0/dist/tf.min.js");
 
 let model;
 (async () => {
-  // model = await tf.loadLayersModel("model/model.json");
   model = await tf.loadGraphModel("model/model.json");
 })();
 
-self.addEventListener("message", function (e) {
+self.addEventListener("message", (e) => {
   e.data.result = predict(e.data.imageData);
   delete e.data.imageData;
   postMessage(e.data);
