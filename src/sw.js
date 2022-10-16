@@ -1,4 +1,4 @@
-var CACHE_NAME = "2022-10-15 12:58";
+var CACHE_NAME = "2022-10-16 10:30";
 var urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/index.js",
@@ -13,7 +13,7 @@ var urlsToCache = [
   "https://marmooo.github.io/yomico/yomico.min.js",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/signature_pad@4.0.10/dist/signature_pad.umd.min.js",
-  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js",
+  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.0.0/dist/tf.min.js",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
   "https://fonts.googleapis.com/css?family=Source+Code+Pro",
 ];
