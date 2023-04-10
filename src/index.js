@@ -373,11 +373,11 @@ function initTime() {
   document.getElementById("time").textContent = gameTime;
 }
 
-function changeMode() {
-  if (this.textContent == "EASY") {
-    this.textContent = "HARD";
+function changeMode(event) {
+  if (event.target.textContent == "EASY") {
+    event.target.textContent = "HARD";
   } else {
-    this.textContent = "EASY";
+    event.target.textContent = "EASY";
   }
 }
 
@@ -447,12 +447,10 @@ document.getElementById("restartButton").onclick = countdown;
 document.getElementById("startButton").onclick = countdown;
 document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
-document.getElementById("searchButton").addEventListener(
-  "animationend",
-  (e) => {
+document.getElementById("searchButton")
+  .addEventListener("animationend", (e) => {
     e.target.classList.remove("animate__heartBeat");
-  },
-);
+  });
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("gradeOption").onchange = initProblems;
 document.addEventListener("click", unlockAudio, {
