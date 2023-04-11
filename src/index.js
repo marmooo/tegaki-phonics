@@ -361,9 +361,8 @@ function countdown() {
       correctCount = problemCount = 0;
       document.getElementById("score").textContent = correctCount;
       document.getElementById("total").textContent = problemCount;
-      document.getElementById("searchButton").classList.add(
-        "animate__heartBeat",
-      );
+      document.getElementById("searchButton")
+        .classList.add("animate__heartBeat");
       startGameTimer();
     }
   }, 1000);
