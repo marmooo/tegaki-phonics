@@ -331,7 +331,7 @@ function startGameTimer() {
       timeNode.textContent = t - 1;
     } else {
       clearInterval(gameTimer);
-      playAudio(endAudio);
+      playAudio("end");
       playPanel.classList.add("d-none");
       scorePanel.classList.remove("d-none");
       document.getElementById("score").textContent = correctCount;
@@ -431,7 +431,7 @@ worker.addEventListener("message", (e) => {
   if (reply == answerEn) {
     answered = true;
     if (!hinted) correctCount += 1;
-    playAudio(correctAudio);
+    playAudio("correct");
     loopVoice(answerEn, 1);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
     document.getElementById("searchButton").classList.add("animate__heartBeat");
