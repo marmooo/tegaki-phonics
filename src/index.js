@@ -14,7 +14,8 @@ let answerJa = "ゴファー";
 let firstRun = true;
 let englishVoices = [];
 let correctCount = problemCount = 0;
-const canvasCache = document.createElement("canvas").getContext("2d");
+const canvasCache = document.createElement("canvas")
+  .getContext("2d", { willReadFrequently: true });
 const audioContext = new AudioContext();
 const audioBufferCache = {};
 loadAudio("end", "mp3/end.mp3");
