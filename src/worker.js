@@ -13,8 +13,8 @@ function getAccuracyScores(imageData) {
 }
 
 function top2(arr) {
-  var max1 = 0;
-  var max2 = 0;
+  let max1 = 0;
+  let max2 = 0;
   arr.forEach((x) => {
     if (max1 < x) {
       max2 = max1;
@@ -26,21 +26,25 @@ function top2(arr) {
 
 function predict(imageData) {
   const scores = getAccuracyScores(imageData);
-  var [max1, max2] = top2(scores);
-  var letter1 = letters[scores.indexOf(max1)];
-  var letter2 = letters[scores.indexOf(max2)];
+  const [max1, max2] = top2(scores);
+  const letter1 = letters[scores.indexOf(max1)];
+  const letter2 = letters[scores.indexOf(max2)];
   return [letter1, letter2];
 }
 
-importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.5.0/dist/tf.min.js");
+async function loadModel() {
+  model = await tf.loadGraphModel("model/model.json");
+}
+
+importScripts(
+  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.5.0/dist/tf.min.js",
+);
 
 let model;
-(async () => {
-  model = await tf.loadGraphModel("model/model.json");
-})();
+loadModel();
 
-self.addEventListener("message", (e) => {
-  e.data.result = predict(e.data.imageData);
-  delete e.data.imageData;
-  postMessage(e.data);
+self.addEventListener("message", (event) => {
+  event.data.result = predict(e.data.imageData);
+  delete event.data.imageData;
+  postMessage(event.data);
 });
