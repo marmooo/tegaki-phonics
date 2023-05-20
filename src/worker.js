@@ -44,7 +44,7 @@ let model;
 loadModel();
 
 self.addEventListener("message", (event) => {
-  event.data.result = predict(e.data.imageData);
+  event.data.result = predict(event.data.imageData);
   delete event.data.imageData;
   postMessage(event.data);
 });
