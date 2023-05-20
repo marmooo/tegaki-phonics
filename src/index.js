@@ -1,18 +1,17 @@
 const playPanel = document.getElementById("playPanel");
+const infoPanel = document.getElementById("infoPanel");
 const countPanel = document.getElementById("countPanel");
 const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 const gameTime = 180;
+let gameTimer;
 let pads = [];
 let problems = [];
-let answered = false;
 let hinted = false;
 let problemCandidate;
-let answerEn = "Gopher";
-let answerJa = "ゴファー";
-let firstRun = true;
-let englishVoices = [];
+let answerEn = "cat";
+let answerJa = "ねこ";
 let correctCount = problemCount = 0;
 const canvasCache = document.createElement("canvas")
   .getContext("2d", { willReadFrequently: true });
@@ -20,16 +19,13 @@ const audioContext = new AudioContext();
 const audioBufferCache = {};
 loadAudio("end", "mp3/end.mp3");
 loadAudio("correct", "mp3/correct3.mp3");
+let englishVoices = [];
+loadVoices();
 loadConfig();
 
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
     document.documentElement.dataset.theme = "dark";
-  }
-  if (localStorage.getItem("furigana") == 1) {
-    const obj = document.getElementById("addFurigana");
-    addFurigana(obj);
-    obj.setAttribute("data-done", true);
   }
 }
 
@@ -40,20 +36,6 @@ function toggleDarkMode() {
   } else {
     localStorage.setItem("darkMode", 1);
     document.documentElement.dataset.theme = "dark";
-  }
-}
-
-function addFurigana() {
-  const obj = document.getElementById("addFurigana");
-  if (obj.getAttribute("data-done")) {
-    localStorage.setItem("furigana", 0);
-    location.reload();
-  } else {
-    import("https://marmooo.github.io/yomico/yomico.min.js").then((module) => {
-      module.yomico("index.yomi");
-    });
-    localStorage.setItem("furigana", 1);
-    obj.setAttribute("data-done", true);
   }
 }
 
@@ -142,7 +124,6 @@ function loadVoices() {
       .filter((voice) => !jokeVoices.includes(voice.voiceURI));
   });
 }
-loadVoices();
 
 function loopVoice(text, n) {
   speechSynthesis.cancel();
@@ -245,43 +226,35 @@ function getRandomInt(min, max) {
 }
 
 function hideAnswer() {
-  document.getElementById("answer").classList.add("d-none");
+  document.getElementById("answerEn").classList.add("d-none");
 }
 
 function showAnswer() {
   hinted = true;
-  document.getElementById("answer").classList.remove("d-none");
-  document.getElementById("answerEn").textContent = answerEn;
-  document.getElementById("answerJa").textContent = answerJa;
+  document.getElementById("answerEn").classList.remove("d-none");
 }
 
 function nextProblem() {
-  answered = hinted = false;
-  const searchButton = document.getElementById("searchButton");
-  searchButton.disabled = true;
-  setTimeout(() => {
-    searchButton.disabled = false;
-  }, 2000);
-  problemCount += 1;
+  hinted = false;
   if (problemCandidate.length <= 0) {
     problemCandidate = problems.slice();
   }
   const problem =
     problemCandidate.splice(getRandomInt(0, problemCandidate.length), 1)[0];
-  const input = document.getElementById("cse-search-input-box-id");
-  const [en, ja] = problem;
+  document.getElementById("reply").textContent = "";
+  setTegakiPanel();
+  const [en, ja, emoji] = problem;
   answerEn = en;
   answerJa = ja;
-  input.value = answerJa;
-  document.getElementById("reply").textContent = "";
-  hideAnswer();
+  document.getElementById("answerEn").textContent = answerEn;
+  document.getElementById("answerJa").textContent = answerJa;
   if (document.getElementById("mode").textContent == "EASY") {
     loopVoice(answerEn, 3);
+    document.getElementById("answerEn").classList.remove("d-none");
+  } else {
+    hideAnswer();
   }
-  document.getElementById("answer").classList.remove("d-none");
-  document.getElementById("answerEn").textContent = "";
-  document.getElementById("answerJa").textContent = answerJa;
-  document.getElementById("wordLength").textContent = answerEn.length;
+  document.getElementById("emoji").textContent = emoji;
 }
 
 function initProblems() {
@@ -291,41 +264,46 @@ function initProblems() {
     .then((tsv) => {
       problems = [];
       tsv.trim().split(/\n/).forEach((line) => {
-        const [en, ja] = line.split(",");
-        problems.push([en, ja]);
+        const [en, ja, emoji] = line.split(",");
+        problems.push([en, ja, emoji]);
       });
       problemCandidate = problems.slice();
     });
 }
 
-function searchByGoogle(event) {
-  event.preventDefault();
-  const input = document.getElementById("cse-search-input-box-id");
-  const element = google.search.cse.element.getElement("searchresults-only0");
-  nextProblem();
-  if (input.value == "") {
-    element.clearAllResults();
-  } else {
-    element.execute(input.value);
-  }
-  setTegakiPanel();
-  if (firstRun) {
-    const gophers = document.getElementById("gophers");
-    while (gophers.firstChild) {
-      gophers.removeChild(gophers.lastChild);
+function countdown() {
+  countPanel.classList.remove("d-none");
+  infoPanel.classList.add("d-none");
+  playPanel.classList.add("d-none");
+  scorePanel.classList.add("d-none");
+  const counter = document.getElementById("counter");
+  counter.textContent = 3;
+  const timer = setInterval(() => {
+    const colors = ["skyblue", "greenyellow", "violet", "tomato"];
+    if (parseInt(counter.textContent) > 1) {
+      const t = parseInt(counter.textContent) - 1;
+      counter.style.backgroundColor = colors[t];
+      counter.textContent = t;
+    } else {
+      clearTimeout(timer);
+      countPanel.classList.add("d-none");
+      infoPanel.classList.remove("d-none");
+      playPanel.classList.remove("d-none");
+      correctCount = problemCount = 0;
+      startGameTimer();
+      nextProblem();
     }
-    unlockAudio();
-    firstRun = false;
-  }
-  return false;
+  }, 1000);
 }
-document.getElementById("cse-search-box-form-id").onsubmit = searchByGoogle;
 
-let gameTimer;
-function startGameTimer() {
+function startGame() {
   clearInterval(gameTimer);
-  const timeNode = document.getElementById("time");
   initTime();
+  countdown();
+}
+
+function startGameTimer() {
+  const timeNode = document.getElementById("time");
   gameTimer = setInterval(() => {
     const t = parseInt(timeNode.textContent);
     if (t > 0) {
@@ -335,42 +313,18 @@ function startGameTimer() {
       playAudio("end");
       playPanel.classList.add("d-none");
       scorePanel.classList.remove("d-none");
-      document.getElementById("score").textContent = correctCount;
-      document.getElementById("total").textContent = problemCount;
-    }
-  }, 1000);
-}
-
-let countdownTimer;
-function countdown() {
-  clearTimeout(countdownTimer);
-  countPanel.classList.remove("d-none");
-  playPanel.classList.add("d-none");
-  scorePanel.classList.add("d-none");
-  const counter = document.getElementById("counter");
-  counter.textContent = 3;
-  countdownTimer = setInterval(() => {
-    const colors = ["skyblue", "greenyellow", "violet", "tomato"];
-    if (parseInt(counter.textContent) > 1) {
-      const t = parseInt(counter.textContent) - 1;
-      counter.style.backgroundColor = colors[t];
-      counter.textContent = t;
-    } else {
-      clearTimeout(countdownTimer);
-      countPanel.classList.add("d-none");
-      playPanel.classList.remove("d-none");
-      correctCount = problemCount = 0;
-      document.getElementById("score").textContent = correctCount;
-      document.getElementById("total").textContent = problemCount;
-      document.getElementById("searchButton")
-        .classList.add("animate__heartBeat");
-      startGameTimer();
+      scoring();
     }
   }, 1000);
 }
 
 function initTime() {
   document.getElementById("time").textContent = gameTime;
+}
+
+function scoring() {
+  document.getElementById("score").textContent = correctCount;
+  document.getElementById("total").textContent = problemCount;
 }
 
 function changeMode(event) {
@@ -386,9 +340,8 @@ customElements.define(
   class extends HTMLElement {
     constructor() {
       super();
-      const template = document.getElementById("tegaki-box").content.cloneNode(
-        true,
-      );
+      const template = document.getElementById("tegaki-box")
+        .content.cloneNode(true);
       const canvas = template.querySelector("canvas");
       const pad = initSignaturePad(canvas);
       template.querySelector(".eraser").onclick = () => {
@@ -402,9 +355,8 @@ customElements.define(
 
 function createTegakiBox() {
   const div = document.createElement("div");
-  const template = document.getElementById("tegaki-box").content.cloneNode(
-    true,
-  );
+  const template = document.getElementById("tegaki-box")
+    .content.cloneNode(true);
   div.appendChild(template);
   const canvas = div.querySelector("canvas");
   const pad = initSignaturePad(canvas);
@@ -426,31 +378,25 @@ canvases.forEach((canvas) => {
 
 const worker = new Worker("worker.js");
 worker.addEventListener("message", (e) => {
-  if (answered) return;
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
-    answered = true;
+    problemCount += 1;
     if (!hinted) correctCount += 1;
     playAudio("correct");
     loopVoice(answerEn, 1);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
-    document.getElementById("searchButton").classList.add("animate__heartBeat");
+    nextProblem();
   }
 });
 
 initProblems();
 
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
-document.getElementById("addFurigana").onclick = addFurigana;
 document.getElementById("mode").onclick = changeMode;
-document.getElementById("restartButton").onclick = countdown;
-document.getElementById("startButton").onclick = countdown;
+document.getElementById("restartButton").onclick = startGame;
+document.getElementById("startButton").onclick = startGame;
 document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
-document.getElementById("searchButton")
-  .addEventListener("animationend", (e) => {
-    e.target.classList.remove("animate__heartBeat");
-  });
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("gradeOption").onchange = initProblems;
 document.addEventListener("click", unlockAudio, {

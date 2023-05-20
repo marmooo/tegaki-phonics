@@ -27,7 +27,6 @@
         });
       }
     </script>
-    <script async src="https://cse.google.com/cse.js?cx=partner-pub-6459713332128733:7164795498"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro">
@@ -37,17 +36,15 @@
     <link rel="manifest" href="/tegaki-phonics/favicon/site.webmanifest">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
+      .emoji { font-size: 5rem; }
       #reply { font-family: 'Source Code Pro', serif; }
       #counter {
         font-size:10rem; width:12rem; height:12rem; line-height:12rem; border-radius: 50%;
         background:tomato; margin:auto; }
       canvas { width:105px; height:140px; border:solid 1px; -webkit-user-select:none; }
       .eraser { display:block; margin:auto; }
-      .card-header.ruby { padding: 1rem 1.25rem .5rem 1.25rem }
       html[data-theme="dark"] { filter: invert(1) hue-rotate(180deg); }
       @-moz-document url-prefix() { html[data-theme="dark"] { background-color:black; } }
-      html[data-theme="dark"] #gophers { filter: invert(1) hue-rotate(180deg); }
-      html[data-theme="dark"] #___gcse_0 img { filter: invert(1) hue-rotate(180deg); }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" media="print" onload="this.media='all';this.onload='null';">
   </head>
@@ -60,8 +57,7 @@
             Tegaki Phonics
           </a>
           <div class="navbar-nav">
-            <button title="ふりがな" id="addFurigana" class="fs-4 btn p-0 ms-1" type="button">👧</button>
-            <button title="ダークモード切替" id="toggleDarkMode" class="fs-4 btn p-0 ms-1" type="button">🌓</button>
+            <button title="ダークモード切替" id="toggleDarkMode" class="fs-4 btn p-0" type="button">🌓</button>
           </div>
         </div>
       </nav>
@@ -77,11 +73,10 @@
         <pre><code>sudo apt install speech-dispatcher
 sudo apt install festival speech-dispatcher-festival</code></pre>
       </div>
-      <div id="playPanel">
+      <div id="infoPanel">
         <div class="row">
           <div class="col-md">
             <p>フォニックスの英単語を手書きで覚えるアプリです。
-              ｢これなあに？｣を押すとランダムにクイズを出します。
             </p>
           </div>
           <div class="col-md text-center">
@@ -100,6 +95,7 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
               </div>
               <div class="mt-2">
                 <button id="startButton" class="btn btn-lg btn-primary" type="button">スタート</button>
+                <button id="showAnswer" class="btn btn-lg btn-secondary" type="button">こたえ</button>
               </div>
             </div>
           </div>
@@ -255,31 +251,21 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
             <span class="ms-1">(す ず)</span>
           </label>
         </form>
-        <div class="text-center">
-          <div class="d-flex flex-wrap justify-content-center">
-            <form id="cse-search-box-form-id" class="pb-1">
-              <input type="hidden" value="学校" id="cse-search-input-box-id">
-              <input id="searchButton" type="submit" value="これなあに？" class="btn btn-primary btn-lg mx-1">
-            </form>
-            <div>
-              <button id="showAnswer" class="btn btn-secondary btn-lg mx-1" type="button">こたえ</button>
-            </div>
-          </div>
-          <div class="text-center pt-3">
-            <button id="respeak" title="もう一度聴く" class="btn btn-outline-secondary btn-lg ms-1" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+        <div id="playPanel" class="pt-3">
+          <div id="emoji" class="emoji text-center notranslate">😺</div>
+          <div>
+            <button id="respeak" title="もう一度聴く" class="btn p-0" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+              </svg>
             </button>
-          </div>
-        </div>
-        <div class="pt-3">
-          <div>ヒント (
-            <span id="wordLength" class="notranslate">6</span>文字 ):
             <span id="reply" class="h3 ps-3 notranslate"></span>
-            <span id="answer" class="d-none h3 ps-1 text-secondary">
+            <span class="h3 ps-1 text-secondary">
               <span class="notranslate">/</span>
-              <span id="answerEn" class="notranslate">Gopher</span>
+              <span id="answerEn" class="notranslate">cat</span>
               <span class="notranslate">(</span>
-              <span id="answerJa">ゴファー</span>
+              <span id="answerJa">ねこ</span>
               <span class="notranslate">)</span>
             </span>
           </div>
@@ -296,46 +282,18 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
               <canvas width="105" height="140"></canvas>
               <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
             </div>
-            <div>
-              <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
-            </div>
-            <div>
-              <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
-            </div>
-            <div>
-              <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
-            </div>
           </div>
         </div>
-        <div id="gophers" class="text-center pt-4">
-          <img src="img/animated-gopher.svg" width="128" height="128" alt="animated-gopher">
-          <img src="img/witch-cooking.png" width="119" height="128" alt="witch-cooking">
-          <img src="img/dancing-gopher.gif" width="128" height="128" alt="dancing-gopher">
-          <img src="img/hiking.png" width="158" height="128" alt="hiking">
-          <img src="img/surfing-js.png" width="176" height="128" alt="surfing-js">
-          <img src="img/witch-learning.png" width="170" height="128" alt="witch-learning">
-          <img src="img/umbrella.png" width="186" height="128" alt="umbrella">
-          <img src="img/messenger-red-letter.png" width="121" height="128" alt="messenger-red-letter">
-          <img src="img/robin-hood.png" width="95" height="128" alt="robin-hood">
-          <img src="img/gamer.png" width="122" height="128" alt="gamer">
-        </div>
-        <div class="gcse-searchresults-only"
-             data-defaultToImageSearch="true"
-             data-disableWebSearch="true"
-             data-resultSetSize="small"></div>
       </div>
       <div id="countPanel" class="text-center d-none">
         <div id="countdown">
           <div id="counter">3</div>
-          <img src="img/hiking.png" width="158" height="128" alt="hiking">
+          <span class="emoji notranslate">🍓</span>
         </div>
       </div>
       <div id="scorePanel" class="text-center pb-3 d-none">
         <h3 class="pt-3">スコア</h3>
-        <img src="img/hiking.png" width="158" height="128" alt="hiking">
+        <span class="emoji notranslate">🍩</span>
         <p>クリアしたのは・・・</p>
         <div class="h2 pb-3">
           <span id="score" class="h1 notranslate">0</span> /
