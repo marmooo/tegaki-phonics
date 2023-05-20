@@ -14,7 +14,7 @@ let answerEn = "cat";
 let answerJa = "ねこ";
 let correctCount = problemCount = 0;
 const canvasCache = document.createElement("canvas")
-  .getContext("2d", { willReadFrequently: true });
+  .getContext("2d", { alpha: false, willReadFrequently: true });
 const audioContext = new AudioContext();
 const audioBufferCache = {};
 loadAudio("end", "mp3/end.mp3");
