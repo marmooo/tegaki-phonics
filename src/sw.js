@@ -1,4 +1,4 @@
-var CACHE_NAME = "2023-05-20 20:40";
+var CACHE_NAME = "2023-05-21 14:10";
 var urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/index.js",
@@ -11,7 +11,7 @@ var urlsToCache = [
   "/tegaki-phonics/favicon/favicon.svg",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js",
-  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.5.0/dist/tf.min.js",
+  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0/dist/tf.min.js",
   "https://fonts.googleapis.com/css?family=Source+Code+Pro",
 ];
 
