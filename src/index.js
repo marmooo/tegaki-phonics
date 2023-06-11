@@ -242,12 +242,12 @@ function nextProblem() {
   const problem =
     problemCandidate.splice(getRandomInt(0, problemCandidate.length), 1)[0];
   document.getElementById("reply").textContent = "";
-  setTegakiPanel();
   const [en, ja, emoji] = problem;
   answerEn = en;
   answerJa = ja;
   document.getElementById("answerEn").textContent = answerEn;
   document.getElementById("answerJa").textContent = answerJa;
+  setTegakiPanel();
   if (document.getElementById("mode").textContent == "EASY") {
     loopVoice(answerEn, 3);
     document.getElementById("answerEn").classList.remove("d-none");
