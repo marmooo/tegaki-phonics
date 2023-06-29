@@ -43,13 +43,13 @@
         background:tomato; margin:auto; }
       canvas { width:105px; height:140px; border:solid 1px; -webkit-user-select:none; }
       .eraser { display:block; margin:auto; }
-      html[data-theme="dark"] { filter: invert(1) hue-rotate(180deg); }
-      @-moz-document url-prefix() { html[data-theme="dark"] { background-color:black; } }
+      html[data-bs-theme="dark"] .navbar-brand > img { filter: invert(1) hue-rotate(180deg); }
+      html[data-bs-theme="dark"] canvas { filter: invert(1) hue-rotate(180deg); }
     </style>
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand navbar-light">
+      <nav class="navbar navbar-expand">
         <div class="container flex-wrap">
           <a class="navbar-brand" href="/tegaki-phonics/">
             <img alt="Tegaki Phonics" src="/tegaki-phonics/favicon/favicon.svg" width="32" height="32">
@@ -254,10 +254,7 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
           <div id="emoji" class="emoji text-center notranslate">😺</div>
           <div>
             <button id="respeak" title="もう一度聴く" class="btn p-0" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
             </button>
             <span id="reply" class="h3 ps-3 notranslate"></span>
             <span class="h3 ps-1 text-secondary">
@@ -271,22 +268,28 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
           <div id="tegakiPanel" class="d-flex justify-content-start pt-3 overflow-auto">
             <div>
               <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
+              <button title="書き直し" class="eraser btn p-0" type="button">
+                <svg width="32" height="32" viewBox="0 0 24 24"><use href="#eraser"/></svg>
+              </button>
             </div>
             <div>
               <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
+              <button title="書き直し" class="eraser btn p-0" type="button">
+                <svg width="32" height="32" viewBox="0 0 24 24"><use href="#eraser"/></svg>
+              </button>
             </div>
             <div>
               <canvas width="105" height="140"></canvas>
-              <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
+              <button title="書き直し" class="eraser btn p-0" type="button">
+                <svg width="32" height="32" viewBox="0 0 24 24"><use href="#eraser"/></svg>
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div id="countPanel" class="text-center d-none">
         <div id="countdown">
-          <div id="counter">3</div>
+          <div id="counter" class="text-dark"></div>
           <span class="emoji">🍓</span>
         </div>
       </div>
@@ -307,7 +310,9 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
         </style>
         <div>
           <canvas width="105" height="140"></canvas>
-          <img src="eraser.svg" width="32" height="32" alt="書き直し" class="eraser" role="button">
+          <button title="書き直し" class="eraser btn p-0" type="button">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><use href="#eraser"/></svg>
+          </button>
         </div>
       </template>
     </main>
@@ -320,6 +325,11 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
       <div class="text-muted">&copy; <a href="https://github.com/marmooo">marmooo</a>
       </div>
     </footer>
+    <svg class="d-none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <symbol id="eraser" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10.85597,20 L11.1558049,20 C11.5909491,19.9657654 12.0165519,19.7822288 12.3493903,19.4493903 L13.0458369,18.7529437 L5.25294373,10.9600505 L4.55649712,11.6564971 C3.81450096,12.3984933 3.81450096,13.6015067 4.55649712,14.3435029 L9.66238457,19.4493903 C9.99522304,19.7822288 10.4208258,19.9657654 10.8559701,20 Z M13.2129942,20 L18.5,20 C18.7761424,20 19,20.2238576 19,20.5 C19,20.7761424 18.7761424,21 18.5,21 L11.1911564,21 C11.0677787,21.0078499 10.9439962,21.0078499 10.8206199,21 L5.5,21 C5.22385763,21 5,20.7761424 5,20.5 C5,20.2238576 5.22385763,20 5.5,20 L8.79878067,20 L3.84939033,15.0506097 C2.71686989,13.9180892 2.71686989,12.0819108 3.84939033,10.9493903 L10.9552778,3.84350288 C12.0877982,2.71098244 13.9239767,2.71098244 15.0564971,3.84350288 L20.1623846,8.94939033 C21.294905,10.0819108 21.294905,11.9180892 20.1623846,13.0506097 L13.2129942,20 Z M5.96005051,10.2529437 L13.7529437,18.0458369 L19.4552778,12.3435029 C20.1972739,11.6015067 20.1972739,10.3984933 19.4552778,9.65649712 L14.3493903,4.55060967 C13.6073942,3.80861351 12.4043807,3.80861351 11.6623846,4.55060967 L5.96005051,10.2529437 Z"/>
+      </symbol>
+    </svg>
     <div class="drop-inline-css d-none collapsing"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js" integrity="sha256-uGyFpu2wVfZ4h/KOsoT+7NdggPAEU2vXx0oNPEYq3J0=" crossorigin="anonymous"></script>
