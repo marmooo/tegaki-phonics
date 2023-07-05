@@ -36,13 +36,13 @@ function toggleDarkMode() {
     document.documentElement.setAttribute("data-bs-theme", "light");
     // pads.forEach((pad) => {
     //   pad.canvas.removeAttribute("style");
-    // })
+    // });
   } else {
     localStorage.setItem("darkMode", 1);
     document.documentElement.setAttribute("data-bs-theme", "dark");
     // pads.forEach((pad) => {
     //   pad.canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
-    // })
+    // });
   }
 }
 
@@ -356,9 +356,9 @@ class TegakiBox extends HTMLElement {
     use.replaceWith(data);
     this.shadowRoot.appendChild(template);
 
-    const canvas = template.querySelector("canvas");
+    const canvas = this.shadowRoot.querySelector("canvas");
     const pad = initSignaturePad(canvas);
-    template.querySelector(".eraser").onclick = () => {
+    this.shadowRoot.querySelector(".eraser").onclick = () => {
       pad.clear();
     };
     pads.push(pad);
