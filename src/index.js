@@ -418,7 +418,7 @@ worker.addEventListener("message", (e) => {
   if (reply == answerEn) {
     problemCount += 1;
     if (!hinted) correctCount += 1;
-    playAudio("correct");
+    playAudio("correct", 0.3);
     loopVoice(answerEn, 1);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
     nextProblem();
