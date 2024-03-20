@@ -242,6 +242,7 @@ function hideAnswer() {
 
 function showAnswer() {
   hinted = true;
+  loopVoice(answerEn, 1);
   document.getElementById("answerEn").classList.remove("d-none");
 }
 
