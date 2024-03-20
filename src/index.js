@@ -14,7 +14,8 @@ let hinted = false;
 let problemCandidate;
 let answerEn = "cat";
 let answerJa = "ねこ";
-let correctCount = problemCount = 0;
+let correctCount = 0;
+let totalCount = 0;
 const canvasCache = document.createElement("canvas")
   .getContext("2d", { alpha: false, willReadFrequently: true });
 const audioContext = new globalThis.AudioContext();
@@ -299,7 +300,7 @@ function countdown() {
       countPanel.classList.add("d-none");
       infoPanel.classList.remove("d-none");
       playPanel.classList.remove("d-none");
-      correctCount = problemCount = 0;
+      correctCount = totalCount = 0;
       startGameTimer();
       nextProblem();
     }
@@ -333,8 +334,8 @@ function initTime() {
 }
 
 function scoring() {
-  document.getElementById("score").textContent = correctCount;
-  document.getElementById("total").textContent = problemCount;
+  document.getElementById("score").textContent =
+    `${correctCount} / ${totalCount}`;
 }
 
 function changeMode(event) {
@@ -355,7 +356,9 @@ class TegakiBox extends HTMLElement {
       .content.cloneNode(true);
     const use = template.querySelector("use");
     const svgId = use.getAttribute("href").slice(1);
-    const data = document.getElementById(svgId).firstElementChild.cloneNode(true);
+    const data = document.getElementById(svgId).firstElementChild.cloneNode(
+      true,
+    );
     use.replaceWith(data);
     this.shadowRoot.appendChild(template);
 
@@ -368,7 +371,7 @@ class TegakiBox extends HTMLElement {
 
     if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
       this.shadowRoot.querySelector("canvas")
-        .setAttribute("style", "filter: invert(1) hue-rotate(180deg);")
+        .setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
     }
   }
 }
@@ -419,7 +422,7 @@ const worker = new Worker("worker.js");
 worker.addEventListener("message", (e) => {
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
-    problemCount += 1;
+    totalCount += 1;
     if (!hinted) correctCount += 1;
     playAudio("correct", 0.3);
     loopVoice(answerEn, 1);
