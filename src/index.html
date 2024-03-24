@@ -41,7 +41,7 @@
       #counter {
         font-size:10rem; width:12rem; height:12rem; line-height:12rem; border-radius: 50%;
         background:tomato; color:black; margin:auto; }
-      canvas { width:105px; height:140px; border:solid 1px; -webkit-user-select:none; }
+      canvas { width:105px; height:140px; outline:solid 1px #000; -webkit-user-select:none; }
       .eraser { display:block; margin:auto; }
       html[data-bs-theme="dark"] .favicon { filter: invert(1) hue-rotate(180deg); }
       html[data-bs-theme="dark"] canvas { filter: invert(1) hue-rotate(180deg); }
@@ -265,7 +265,7 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
               <span class="notranslate">)</span>
             </span>
           </div>
-          <div id="tegakiPanel" class="d-flex justify-content-start pt-3 overflow-auto">
+          <div id="tegakiPanel" class="d-flex justify-content-start pt-3 ps-1 overflow-auto">
             <div>
               <canvas width="105" height="140"></canvas>
               <button title="書き直し" class="eraser btn p-0" type="button">
@@ -304,7 +304,7 @@ sudo apt install festival speech-dispatcher-festival</code></pre>
       </div>
       <template id="tegaki-box">
         <style>
-          canvas { width:105px; height:140px; border:solid 1px; -webkit-user-select:none; }
+          canvas { width:105px; height:140px; outline:solid 1px #000; -webkit-user-select:none; }
           .eraser { display:block; margin:auto; cursor:pointer; }
         </style>
         <div>
