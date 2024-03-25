@@ -1,3 +1,4 @@
+import { Collapse } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm";
 import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/+esm";
 
 const playPanel = document.getElementById("playPanel");
@@ -270,7 +271,7 @@ function nextProblem() {
 }
 
 function initProblems() {
-  const grade = document.getElementById("gradeOption").radio.value;
+  const grade = document.getElementById("courseOption").radio.value;
   fetch("data/" + grade + ".csv")
     .then((response) => response.text())
     .then((tsv) => {
@@ -441,7 +442,7 @@ document.getElementById("startButton").onclick = startGame;
 document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("mode").onclick = changeMode;
-document.getElementById("gradeOption").onchange = initProblems;
+document.getElementById("courseOption").onchange = initProblems;
 document.addEventListener("click", unlockAudio, {
   once: true,
   useCapture: true,
