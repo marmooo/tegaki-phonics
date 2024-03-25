@@ -271,8 +271,8 @@ function nextProblem() {
 }
 
 function initProblems() {
-  const grade = document.getElementById("courseOption").radio.value;
-  fetch("data/" + grade + ".csv")
+  const course = document.getElementById("courseOption").radio.value;
+  fetch("data/" + course + ".csv")
     .then((response) => response.text())
     .then((tsv) => {
       problems = [];
@@ -435,6 +435,7 @@ worker.addEventListener("message", (e) => {
 
 initProblems();
 
+new Collapse(document.getElementById("courseOption"), { toggle: false });
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("restartButton").onclick = startGame;
