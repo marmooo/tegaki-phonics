@@ -8,6 +8,7 @@ const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 const gameTime = 180;
+let firstRun = true;
 let gameTimer;
 let pads = [];
 let problems = [];
@@ -285,6 +286,7 @@ function initProblems() {
 }
 
 function countdown() {
+  if (firstRun) predict(canvases[0]);
   countPanel.classList.remove("d-none");
   infoPanel.classList.add("d-none");
   playPanel.classList.add("d-none");
@@ -303,8 +305,8 @@ function countdown() {
       infoPanel.classList.remove("d-none");
       playPanel.classList.remove("d-none");
       correctCount = totalCount = 0;
-      startGameTimer();
       nextProblem();
+      startGameTimer();
     }
   }, 1000);
 }
@@ -421,15 +423,19 @@ canvases.forEach((canvas) => {
 });
 
 const worker = new Worker("worker.js");
-worker.addEventListener("message", (e) => {
-  const reply = showPredictResult(canvases[e.data.pos], e.data.result);
-  if (reply == answerEn) {
-    totalCount += 1;
-    if (!hinted) correctCount += 1;
-    playAudio("correct", 0.3);
-    loopVoice(answerEn, 1);
-    document.getElementById("reply").textContent = "⭕ " + answerEn;
-    nextProblem();
+worker.addEventListener("message", (event) => {
+  if (firstRun) {
+    firstRun = false;
+  } else {
+    const reply = showPredictResult(canvases[event.data.pos], event.data.result);
+    if (reply == answerEn) {
+      totalCount += 1;
+      if (!hinted) correctCount += 1;
+      playAudio("correct", 0.3);
+      loopVoice(answerEn, 1);
+      document.getElementById("reply").textContent = "⭕ " + answerEn;
+      nextProblem();
+    }
   }
 });
 
