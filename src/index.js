@@ -8,7 +8,6 @@ const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 const gameTime = 180;
-let firstRun = true;
 let gameTimer;
 let pads = [];
 let problems = [];
@@ -229,7 +228,7 @@ function getImageData(drawElement) {
 function predict(canvas) {
   const imageData = getImageData(canvas);
   const pos = canvases.indexOf(canvas);
-  worker.postMessage({ imageData: imageData, pos: pos });
+  worker.postMessage({ imageData, pos });
 }
 
 function getRandomInt(min, max) {
@@ -286,7 +285,6 @@ function initProblems() {
 }
 
 function countdown() {
-  if (firstRun) predict(canvases[0]);
   countPanel.classList.remove("d-none");
   infoPanel.classList.add("d-none");
   playPanel.classList.add("d-none");
@@ -424,18 +422,16 @@ canvases.forEach((canvas) => {
 
 const worker = new Worker("worker.js");
 worker.addEventListener("message", (event) => {
-  if (firstRun) {
-    firstRun = false;
-  } else {
-    const reply = showPredictResult(canvases[event.data.pos], event.data.result);
-    if (reply == answerEn) {
-      totalCount += 1;
-      if (!hinted) correctCount += 1;
-      playAudio("correct", 0.3);
-      loopVoice(answerEn, 1);
-      document.getElementById("reply").textContent = "⭕ " + answerEn;
-      nextProblem();
-    }
+  const data = event.data;
+  if (pads[data.pos].toData().length == 0) return;
+  const reply = showPredictResult(canvases[data.pos], data.result);
+  if (reply == answerEn) {
+    totalCount += 1;
+    if (!hinted) correctCount += 1;
+    playAudio("correct", 0.3);
+    loopVoice(answerEn, 1);
+    document.getElementById("reply").textContent = "⭕ " + answerEn;
+    nextProblem();
   }
 });
 
@@ -450,6 +446,9 @@ document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("courseOption").onchange = initProblems;
+document.addEventListener("pointerdown", () => {
+  predict(canvases[0]);
+}, { once: true });
 document.addEventListener("click", unlockAudio, {
   once: true,
   useCapture: true,
