@@ -1,4 +1,4 @@
-const CACHE_NAME = "2024-05-31 10:00";
+const CACHE_NAME = "2024-06-15 10:56";
 const urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/index.js",
@@ -8,7 +8,7 @@ const urlsToCache = [
   "/tegaki-phonics/mp3/end.mp3",
   "/tegaki-phonics/mp3/correct3.mp3",
   "/tegaki-phonics/favicon/favicon.svg",
-  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.19.0/dist/tf.min.js",
+  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js",
   "https://fonts.googleapis.com/css?family=Source+Code+Pro",
 ];
 
