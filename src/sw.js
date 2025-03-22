@@ -1,4 +1,4 @@
-const CACHE_NAME = "2024-11-05 14:00";
+const CACHE_NAME = "2025-03-22 19:34";
 const urlsToCache = [
   "/tegaki-phonics/",
   "/tegaki-phonics/index.js",
