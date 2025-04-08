@@ -1,4 +1,4 @@
-import { Collapse } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm";
+import { Collapse } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/+esm";
 import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.0.7/+esm";
 
 const playPanel = document.getElementById("playPanel");
