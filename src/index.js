@@ -6,6 +6,7 @@ const infoPanel = document.getElementById("infoPanel");
 const countPanel = document.getElementById("countPanel");
 const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
+const courseOption = document.getElementById("courseOption");
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 const gameTime = 180;
 let gameTimer;
@@ -295,7 +296,7 @@ function nextProblem() {
 }
 
 function initProblems() {
-  const course = document.getElementById("courseOption").radio.value;
+  const course = courseOption.radio.value;
   fetch("data/" + course + ".csv")
     .then((response) => response.text())
     .then((tsv) => {
@@ -309,6 +310,7 @@ function initProblems() {
 }
 
 function countdown() {
+  loopVoice("Ready", 1); // unlock
   countPanel.classList.remove("d-none");
   infoPanel.classList.add("d-none");
   playPanel.classList.add("d-none");
@@ -461,7 +463,7 @@ worker.addEventListener("message", (event) => {
 
 initProblems();
 
-new Collapse(document.getElementById("courseOption"), { toggle: false });
+new Collapse(courseOption, { toggle: false });
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("restartButton").onclick = startGame;
@@ -469,7 +471,7 @@ document.getElementById("startButton").onclick = startGame;
 document.getElementById("respeak").onclick = respeak;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("mode").onclick = changeMode;
-document.getElementById("courseOption").onchange = initProblems;
+courseOption.onchange = initProblems;
 document.addEventListener("pointerdown", () => {
   predict(canvases[0]);
 }, { once: true });
