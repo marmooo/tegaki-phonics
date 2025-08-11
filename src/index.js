@@ -295,18 +295,16 @@ function nextProblem() {
   document.getElementById("emoji").textContent = emoji;
 }
 
-function initProblems() {
+async function initProblems() {
   const course = courseOption.radio.value;
-  fetch("data/" + course + ".csv")
-    .then((response) => response.text())
-    .then((tsv) => {
-      problems = [];
-      tsv.trim().split(/\n/).forEach((line) => {
-        const [en, ja, emoji] = line.split(",");
-        problems.push([en, ja, emoji]);
-      });
-      problemCandidate = problems.slice();
-    });
+  const response = await fetch("data/" + course + ".csv");
+  const tsv = await response.text();
+  problems = [];
+  tsv.trim().split(/\n/).forEach((line) => {
+    const [en, ja, emoji] = line.split(",");
+    problems.push([en, ja, emoji]);
+  });
+  problemCandidate = problems.slice();
 }
 
 function countdown() {
@@ -461,7 +459,7 @@ worker.addEventListener("message", (event) => {
   }
 });
 
-initProblems();
+await initProblems();
 
 new Collapse(courseOption, { toggle: false });
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
