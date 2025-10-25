@@ -1,5 +1,6 @@
 import { Collapse } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/+esm";
 import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.1.1/+esm";
+import { createWorker } from "https://cdn.jsdelivr.net/npm/emoji-particle@0.0.4/+esm";
 
 const playPanel = document.getElementById("playPanel");
 const infoPanel = document.getElementById("infoPanel");
@@ -7,6 +8,8 @@ const countPanel = document.getElementById("countPanel");
 const scorePanel = document.getElementById("scorePanel");
 const tegakiPanel = document.getElementById("tegakiPanel");
 const courseOption = document.getElementById("courseOption");
+const emojiParticle = initEmojiParticle();
+const maxParticleCount = 10;
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 const gameTime = 180;
 let gameTimer;
@@ -175,6 +178,30 @@ function respeak() {
   loopVoice(answerEn, 1);
 }
 
+function initEmojiParticle() {
+  const canvas = document.createElement("canvas");
+  Object.assign(canvas.style, {
+    position: "fixed",
+    pointerEvents: "none",
+    top: "0px",
+    left: "0px",
+  });
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+  document.body.appendChild(canvas);
+
+  const offscreen = canvas.transferControlToOffscreen();
+  const worker = createWorker();
+  worker.postMessage({ type: "init", canvas: offscreen }, [offscreen]);
+
+  globalThis.addEventListener("resize", () => {
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    worker.postMessage({ type: "resize", width, height });
+  });
+  return { canvas, offscreen, worker };
+}
+
 function setTegakiPanel() {
   while (tegakiPanel.firstChild) {
     tegakiPanel.removeChild(tegakiPanel.lastChild);
@@ -273,6 +300,16 @@ function showAnswer() {
 }
 
 function nextProblem() {
+  for (let i = 0; i < Math.min(correctCount, maxParticleCount); i++) {
+    emojiParticle.worker.postMessage({
+      type: "spawn",
+      options: {
+        particleType: "popcorn",
+        originX: Math.random() * emojiParticle.canvas.width,
+        originY: Math.random() * emojiParticle.canvas.height,
+      },
+    });
+  }
   hinted = false;
   if (problemCandidate.length <= 0) {
     problemCandidate = problems.slice();
