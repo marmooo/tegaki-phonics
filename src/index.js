@@ -1,5 +1,5 @@
 import { Collapse } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/+esm";
-import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.1.1/+esm";
+import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.1.2/+esm";
 import { createWorker } from "https://cdn.jsdelivr.net/npm/emoji-particle@0.0.4/+esm";
 
 const playPanel = document.getElementById("playPanel");
