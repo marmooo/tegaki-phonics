@@ -1,6 +1,5 @@
-const CACHE_NAME = "2025-11-23 00:14";
+const cacheName = "2025-11-29 00:00";
 const urlsToCache = [
-  "/tegaki-phonics/",
   "/tegaki-phonics/index.js",
   "/tegaki-phonics/worker.js",
   "/tegaki-phonics/model/model.json",
@@ -12,29 +11,35 @@ const urlsToCache = [
   "https://fonts.googleapis.com/css?family=Source+Code+Pro",
 ];
 
+async function preCache() {
+  const cache = await caches.open(cacheName);
+  await Promise.all(
+    urlsToCache.map((url) =>
+      cache.add(url).catch((e) => console.warn("Failed to cache", url, e))
+    ),
+  );
+  self.skipWaiting();
+}
+
+async function handleFetch(event) {
+  const cached = await caches.match(event.request);
+  return cached || fetch(event.request);
+}
+
+async function cleanOldCaches() {
+  const cacheNames = await caches.keys();
+  await Promise.all(
+    cacheNames.map((name) => name !== cacheName ? caches.delete(name) : null),
+  );
+  self.clients.claim();
+}
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    }),
-  );
+  event.waitUntil(preCache());
 });
-
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }),
-  );
+  event.respondWith(handleFetch(event));
 });
-
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => caches.delete(cacheName)),
-      );
-    }),
-  );
+  event.waitUntil(cleanOldCaches());
 });
