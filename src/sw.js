@@ -1,4 +1,4 @@
-const cacheName = "2025-11-29 00:00";
+const cacheName = "2026-01-20 00:00";
 const urlsToCache = [
   "/tegaki-phonics/index.js",
   "/tegaki-phonics/worker.js",
@@ -15,7 +15,7 @@ async function preCache() {
   const cache = await caches.open(cacheName);
   await Promise.all(
     urlsToCache.map((url) =>
-      cache.add(url).catch((e) => console.warn("Failed to cache", url, e))
+      cache.add(url).catch((err) => console.warn("Failed to cache", url, err))
     ),
   );
   self.skipWaiting();
